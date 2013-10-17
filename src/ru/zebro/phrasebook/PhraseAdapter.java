@@ -1,5 +1,9 @@
 package ru.zebro.phrasebook;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +16,22 @@ public class PhraseAdapter extends BaseAdapter {
 	private int itemcount = 10;
 	
     private Context mContext;
+    
+    private List<Map<Long, String>> phrasebookList;
+    
+    private DataBaseHelper dbHelper;
 
-    public PhraseAdapter(Context c) {
+    public PhraseAdapter(Context c, DataBaseHelper dbHelper) {
         mContext = c;
+        this.dbHelper = dbHelper;
+        
+        try {
+			dbHelper.createDataBase();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        phrasebookList =  dbHelper.getPhraseBook();
     }
 
     public int getCount() {

@@ -15,8 +15,10 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		DataBaseHelper dbHelper = new DataBaseHelper(getApplicationContext());
+		
 	    GridView gridview = (GridView) findViewById(R.id.gridview);
-	    gridview.setAdapter(new PhraseAdapter(this));
+	    gridview.setAdapter(new PhraseAdapter(this, dbHelper));
 
 	    gridview.setOnItemClickListener(new OnItemClickListener() {
 	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

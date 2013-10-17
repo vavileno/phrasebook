@@ -5,8 +5,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -128,6 +133,31 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
 	}
+	
+	public List<Map<Long, String>> getPhraseBook() {
+		List<Map<Long, String>> phrasebookList = new ArrayList<Map<Long, String>>();
+		Map<Long, String> rusPhrasesMap = new HashMap<Long, String>();
+		Map<Long, String> mandarinPhrasesMap = new HashMap<Long, String>();
+		
+		String[] phraseColumns = {"_id", "_phrase_string"};
+		
+		Cursor cursor = phrasebookDataBase.query("_phrase_rus", phraseColumns, null, null, null, null, null);
+		
+		do {
+			rusPhrasesMap.put(cursor.getLong(0), cursor.getString(1));
+		} while(cursor.moveToNext());
+		phrasebookList.add(rusPhrasesMap);
+		
+		cursor = phrasebookDataBase.query("_phrase_mandarin", phraseColumns, null, null, null, null, null);
+		do {
+			mandarinPhrasesMap.put(cursor.getLong(0), cursor.getString(1));
+		} while(cursor.moveToNext());	
+		phrasebookList.add(mandarinPhrasesMap);
+		
+		return phrasebookList;
+	}
+	
+	
 
         // Здесь можно добавить вспомогательные методы для доступа и получения данных из БД
         // вы можете возвращать курсоры через "return myDataBase.query(....)", это облегчит их использование
