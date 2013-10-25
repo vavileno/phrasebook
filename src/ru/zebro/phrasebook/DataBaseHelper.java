@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -21,7 +22,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 	private static String DB_PATH;
 	
     //стандартный системный путь к базе данных приложения
-    private static String RELATIVE_DB_PATH = "data/ru.zebro.phrasebook/databases/";
+//    private static String RELATIVE_DB_PATH = "data/ru.zebro.phrasebook/databases/";
 
     private static String DB_NAME = "phrasebook";
 
@@ -38,7 +39,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
     	super(context, DB_NAME, null, 1);
         this.phrasebookContext = context;
-        DB_PATH = context.getFilesDir().getPath() + RELATIVE_DB_PATH;
+        DB_PATH = context.getFilesDir().getPath(); // + RELATIVE_DB_PATH;
     }
 
   /**
@@ -134,25 +135,29 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	}
 	
-	public List<Map<Long, String>> getPhraseBook() {
-		List<Map<Long, String>> phrasebookList = new ArrayList<Map<Long, String>>();
-		Map<Long, String> rusPhrasesMap = new HashMap<Long, String>();
-		Map<Long, String> mandarinPhrasesMap = new HashMap<Long, String>();
+	@SuppressLint("UseSparseArrays")
+	public List<Map<Integer, String>> getPhraseBook() {
+		List<Map<Integer, String>> phrasebookList = new ArrayList<Map<Integer, String>>();
+		Map<Integer, String> rusPhrasesMap = new HashMap<Integer, String>();
+		Map<Integer, String> mandarinPhrasesMap = new HashMap<Integer, String>();
 		
 		String[] phraseColumns = {"_id", "_phrase_string"};
 		
-		Cursor cursor = phrasebookDataBase.query("_phrase_rus", phraseColumns, null, null, null, null, null);
+		Cursor cursor = phrasebookDataBase.query("_phrases_rus", phraseColumns, null, null, null, null, null);
+		cursor.moveToPosition(0);
 		
 		do {
-			rusPhrasesMap.put(cursor.getLong(0), cursor.getString(1));
+			rusPhrasesMap.put(cursor.getInt(0), cursor.getString(1));
 		} while(cursor.moveToNext());
-		phrasebookList.add(rusPhrasesMap);
+		phrasebookList.add(0, rusPhrasesMap);
 		
-		cursor = phrasebookDataBase.query("_phrase_mandarin", phraseColumns, null, null, null, null, null);
+		cursor = phrasebookDataBase.query("_phrases_mandarin", phraseColumns, null, null, null, null, null);
+		cursor.moveToPosition(0);
+		
 		do {
-			mandarinPhrasesMap.put(cursor.getLong(0), cursor.getString(1));
+			mandarinPhrasesMap.put(cursor.getInt(0), cursor.getString(1));
 		} while(cursor.moveToNext());	
-		phrasebookList.add(mandarinPhrasesMap);
+		phrasebookList.add(1, mandarinPhrasesMap);
 		
 		return phrasebookList;
 	}

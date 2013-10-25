@@ -1,6 +1,7 @@
 package ru.zebro.phrasebook;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -17,21 +18,25 @@ public class PhraseAdapter extends BaseAdapter {
 	
     private Context mContext;
     
-    private List<Map<Long, String>> phrasebookList;
+    private List<Map<Integer, String>> phrasebookList;
     
-    private DataBaseHelper dbHelper;
+    private Phrasebook phrasebook;
 
     public PhraseAdapter(Context c, DataBaseHelper dbHelper) {
         mContext = c;
-        this.dbHelper = dbHelper;
         
         try {
 			dbHelper.createDataBase();
+			dbHelper.openDataBase();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
         
         phrasebookList =  dbHelper.getPhraseBook();
+
+        phrasebook = phrasebookList.get(0) != null 
+        		? new Phrasebook(phrasebookList.get(0), phrasebookList.get(1)) 
+        		: new Phrasebook(Collections.<Integer, String> emptyMap(), Collections.<Integer, String> emptyMap());
     }
 
     public int getCount() {
@@ -51,13 +56,19 @@ public class PhraseAdapter extends BaseAdapter {
         TextView textView;
         if (convertView == null) {  // if it's not recycled, initialize some attributes
         	textView = new TextView(mContext);
-        	textView.setLayoutParams(new GridView.LayoutParams(85, 85));
+        	textView.setLayoutParams(new GridView.LayoutParams(100, 100));
         	textView.setPadding(8, 8, 8, 8);
         } else {
         	textView = (TextView) convertView;
         }
 
-        textView.setText("Тест");
+        textView.setText(phrasebook.getSourcePhrase(position + 1));
+
         return textView;
     }
+
+	public Phrasebook getPhrasebook() {
+		return phrasebook;
+	}
+   
 }
