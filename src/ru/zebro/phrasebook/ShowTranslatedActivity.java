@@ -13,7 +13,10 @@ public class ShowTranslatedActivity extends Activity {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_show_translated_phrase);
 	    
-	    TextView view = (TextView) findViewById(R.id.textView1);
+	    TextView view = (TextView) findViewById(R.id.showTranslate);
+	    
+
+	    view.setTextSize(getResources().getDimension(R.dimen.textsize));
 	    view.setText(this.getIntent().getExtras().getString(TRANSLATED_TEXT));
 	}
 	

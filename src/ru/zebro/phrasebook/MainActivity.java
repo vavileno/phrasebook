@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
-		    case R.id.action_settings:
+		    case R.id.action_exit:
 		    	this.finish(); 
 		        return true;
 		    default:
