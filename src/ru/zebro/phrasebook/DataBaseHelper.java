@@ -140,6 +140,7 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 		List<Map<Integer, String>> phrasebookList = new ArrayList<Map<Integer, String>>();
 		Map<Integer, String> rusPhrasesMap = new HashMap<Integer, String>();
 		Map<Integer, String> mandarinPhrasesMap = new HashMap<Integer, String>();
+		Map<Integer, String> pinyinPhrasesMap = new HashMap<Integer, String>();
 		
 		String[] phraseColumns = {"_id", "_phrase_string"};
 		
@@ -158,6 +159,14 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 			mandarinPhrasesMap.put(cursor.getInt(0), cursor.getString(1));
 		} while(cursor.moveToNext());	
 		phrasebookList.add(1, mandarinPhrasesMap);
+		
+		cursor = phrasebookDataBase.query("_phrases_pinyin", phraseColumns, null, null, null, null, null);
+		cursor.moveToPosition(0);
+		
+		do {
+			pinyinPhrasesMap.put(cursor.getInt(0), cursor.getString(1));
+		} while(cursor.moveToNext());	
+		phrasebookList.add(2, pinyinPhrasesMap);		
 		
 		return phrasebookList;
 	}

@@ -35,6 +35,8 @@ public class MainActivity extends Activity {
 		    	Intent intent = new Intent(context, ShowTranslatedActivity.class);
 		    	intent.putExtra(ShowTranslatedActivity.TRANSLATED_TEXT, 
 		    			phraseAdapter.getPhrasebook().getDestinationPhrase(position + 1));
+		    	intent.putExtra(ShowTranslatedActivity.TRANSLATED_TEXT_SPELLED, 
+		    			phraseAdapter.getPhrasebook().getSpellingPhrase(position + 1));		    	
 		    	startActivity(intent);
 	        }
 	    });		

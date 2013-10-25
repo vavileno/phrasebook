@@ -35,8 +35,10 @@ public class PhraseAdapter extends BaseAdapter {
         phrasebookList =  dbHelper.getPhraseBook();
 
         phrasebook = phrasebookList.get(0) != null 
-        		? new Phrasebook(phrasebookList.get(0), phrasebookList.get(1)) 
-        		: new Phrasebook(Collections.<Integer, String> emptyMap(), Collections.<Integer, String> emptyMap());
+        		? new Phrasebook(phrasebookList.get(0), phrasebookList.get(1), phrasebookList.get(2)) 
+        		: new Phrasebook(Collections.<Integer, String> emptyMap(), 
+        						Collections.<Integer, String> emptyMap(),
+        						Collections.<Integer, String> emptyMap());
     }
 
     public int getCount() {
