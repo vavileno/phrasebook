@@ -3,6 +3,11 @@
 
     <string name="app_name">Phrasebook</string>
     <string name="action_exit">Exit</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="edit_source_phrase_message">Your language phrase&#8230;</string>
+    <string name="edit_destination_phrase_message">Phrase in language translated to&#8230;</string>
+    <string name="edit_spell_phrase_message">Phrase pronuncation in language translated to&#8230;</string>
+    <string name="action_add_phrase">Add phrase</string>
+    <string name="action_add_phrase_button_save">Save</string>
+    <string name="action_add_phrase_button_cancel">Cancel</string>    
 
 </resources>

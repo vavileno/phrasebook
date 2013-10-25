@@ -24,6 +24,7 @@
         </activity>
         
         <activity android:name="ShowTranslatedActivity"></activity>
+        <activity android:name="AddPhraseActivity"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:layout_weight="10" >
+     
+<LinearLayout 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/sourcePhraseLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:gravity="left|center" />
+
+    <EditText
+        android:id="@+id/sourcePhraseTextEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="19"
+        android:gravity="left|center"
+        android:hint="@string/edit_source_phrase_message" />
+
+    <TextView
+        android:id="@+id/destinationPhraseLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:gravity="left|center" />
+
+    <EditText
+        android:id="@+id/destinationPhraseTextEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="19"
+        android:gravity="left|center"
+        android:hint="@string/edit_destination_phrase_message" />
+
+    <TextView
+        android:id="@+id/spellPhraseLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:gravity="left|center" />
+
+    <EditText
+        android:id="@+id/spellPhraseTextEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="19"
+        android:gravity="left|center"
+        android:hint="@string/edit_spell_phrase_message" />
+
+    <Button
+        android:id="@+id/add_phrase_button_save"
+        android:layout_width="158dp"
+        android:layout_height="wrap_content"
+        android:text="@string/action_add_phrase_button_save" />
+
+</LinearLayout>
+
+<Button
+    android:id="@+id/add_phrase_button_cancel"
+    android:layout_width="158dp"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:text="@string/action_add_phrase_button_cancel" />
+    
+</RelativeLayout>

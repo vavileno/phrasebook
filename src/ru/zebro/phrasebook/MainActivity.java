@@ -55,6 +55,9 @@ public class MainActivity extends Activity {
 		    case R.id.action_exit:
 		    	this.finish(); 
 		        return true;
+		    case R.id.action_add_phrase:
+		    	Intent intent = new Intent(this, AddPhraseActivity.class);
+		    	startActivity(intent);	    	
 		    default:
 		        return super.onOptionsItemSelected(item);
     	}    	
