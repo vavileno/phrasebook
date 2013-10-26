@@ -8,6 +8,18 @@
     <string name="edit_spell_phrase_message">Phrase pronuncation in language translated to&#8230;</string>
     <string name="action_add_phrase">Add phrase</string>
     <string name="action_add_phrase_button_save">Save</string>
-    <string name="action_add_phrase_button_cancel">Cancel</string>    
+    <string name="action_add_phrase_button_cancel">Cancel</string>
+    <string name="action_refresh_gridview">Refresh gridview</string>        
 
+    <string name="action_delete_phrase_header">Delete phrase</string>
+    <string name="action_delete_phrase_message">Are you sure you want to delete this phrase?</string>
+        
+    <string name="action_common_category">Category COMMON</string>
+    <string name="action_time_category">Category TIME</string>
+    <string name="action_places_category">Category PLACES</string>
+    <string name="action_hotel_category">Category HOTEL</string>
+    <string name="action_transport_category">Category TRANSPORT</string>
+    <string name="action_money_category">Category MONEY</string>
+    <string name="action_food_category">Category FOOD/RESTAURANT</string>    
+    <string name="action_health_category">Category HEALTH</string>
 </resources>

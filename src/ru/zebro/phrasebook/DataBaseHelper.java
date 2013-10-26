@@ -6,18 +6,31 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DataBaseHelper extends SQLiteOpenHelper{
+@SuppressLint("UseSparseArrays")
+public class DataBaseHelper extends SQLiteOpenHelper {
+	
+	public static final String STRING_ID_COLUMN_NAME = "_id";
+	
+	public static final String STRING_SOURCE_TABLE_NAME = "_phrases_rus";
+	
+	public static final String STRING_DESTINATION_TABLE_NAME = "_phrases_mandarin";
+	
+	public static final String STRING_PRONUNCATION_TABLE_NAME = "_phrases_pinyin";	
+	
+	public static final String STRING_CATEGORY_TABLE_NAME = "_phrases_category";
 
 	private static String DB_PATH;
 	
@@ -66,7 +79,6 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
         	}
     	}
-
     }
 
     /**
@@ -111,18 +123,15 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
     	//открываем БД
         String myPath = DB_PATH + DB_NAME;
-        phrasebookDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+        phrasebookDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
 
     }
 
     @Override
 	public synchronized void close() {
-
     	    if(phrasebookDataBase != null)
     	    	phrasebookDataBase.close();
-
     	    super.close();
-
 	}
 
 	@Override
@@ -135,42 +144,63 @@ public class DataBaseHelper extends SQLiteOpenHelper{
 
 	}
 	
-	@SuppressLint("UseSparseArrays")
-	public List<Map<Integer, String>> getPhraseBook() {
-		List<Map<Integer, String>> phrasebookList = new ArrayList<Map<Integer, String>>();
-		Map<Integer, String> rusPhrasesMap = new HashMap<Integer, String>();
-		Map<Integer, String> mandarinPhrasesMap = new HashMap<Integer, String>();
-		Map<Integer, String> pinyinPhrasesMap = new HashMap<Integer, String>();
+	
+	public List<Integer> loadCategoryPhraseIds(int category) {
+		List<Integer> result = new ArrayList<Integer>();
 		
+		String[] phraseColumns = {"_id"};
+		Cursor cursor = phrasebookDataBase.query("_phrases_category", 
+													phraseColumns, 
+													"_category_num = " + category, 
+													null, null, null, null);
+		if(cursor.getCount() == 0) {
+			result.add(0);
+			return result;
+		} 
+		cursor.moveToPosition(0);
+		do {
+			result.add(cursor.getInt(0));
+		} while(cursor.moveToNext());	
+		return result;		
+	}	
+	
+	@SuppressLint("UseSparseArrays")
+	public List<Map<Integer, String>> loadPhraseBook() {
+		List<Map<Integer, String>> phrasebookList = new ArrayList<Map<Integer, String>>();
 		String[] phraseColumns = {"_id", "_phrase_string"};
 		
 		Cursor cursor = phrasebookDataBase.query("_phrases_rus", phraseColumns, null, null, null, null, null);
-		cursor.moveToPosition(0);
-		
-		do {
-			rusPhrasesMap.put(cursor.getInt(0), cursor.getString(1));
-		} while(cursor.moveToNext());
-		phrasebookList.add(0, rusPhrasesMap);
+		phrasebookList.add(0, loadPhrasesMap(cursor));
 		
 		cursor = phrasebookDataBase.query("_phrases_mandarin", phraseColumns, null, null, null, null, null);
-		cursor.moveToPosition(0);
-		
-		do {
-			mandarinPhrasesMap.put(cursor.getInt(0), cursor.getString(1));
-		} while(cursor.moveToNext());	
-		phrasebookList.add(1, mandarinPhrasesMap);
+		phrasebookList.add(1, loadPhrasesMap(cursor));
 		
 		cursor = phrasebookDataBase.query("_phrases_pinyin", phraseColumns, null, null, null, null, null);
-		cursor.moveToPosition(0);
-		
-		do {
-			pinyinPhrasesMap.put(cursor.getInt(0), cursor.getString(1));
-		} while(cursor.moveToNext());	
-		phrasebookList.add(2, pinyinPhrasesMap);		
+		phrasebookList.add(2, loadPhrasesMap(cursor));		
 		
 		return phrasebookList;
 	}
 	
+	private Map<Integer, String> loadPhrasesMap(Cursor cursor) {
+		if(cursor.getCount() == 0) {
+			return Collections.emptyMap();
+		} 
+		cursor.moveToPosition(0);
+		
+		Map<Integer, String> phrasesMap = new HashMap<Integer, String>();
+		do {
+			phrasesMap.put(cursor.getInt(0), cursor.getString(1));
+		} while(cursor.moveToNext());	
+		return phrasesMap;		
+	}
+
+	public void save(String table, ContentValues values) {
+		phrasebookDataBase.insert(table, null, values);
+	}
+
+	public void deleteById(String tableName, String columnName, Integer id) {
+		phrasebookDataBase.delete(tableName, STRING_ID_COLUMN_NAME + " = " + id, null);
+	}
 	
 
         // Здесь можно добавить вспомогательные методы для доступа и получения данных из БД

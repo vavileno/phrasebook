@@ -2,13 +2,57 @@
 
     
     
-    
+	<item
+        android:id="@+id/action_common_category"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_common_category"/>
+	<item
+        android:id="@+id/action_time_category"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_time_category"/>
+	<item
+        android:id="@+id/action_places_category"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_places_category"/>
+	<item
+        android:id="@+id/action_hotel_category"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_hotel_category"/>
+	<item
+        android:id="@+id/action_transport_category"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_transport_category"/>
+	<item
+        android:id="@+id/action_money_category"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_money_category"/>
+	<item
+        android:id="@+id/action_food_category"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_food_category"/>
+	<item
+        android:id="@+id/action_health_category"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_health_category"/>
     
     <item
         android:id="@+id/action_add_phrase"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_add_phrase"/>
+    <item
+        android:id="@+id/action_refresh_gridview"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/action_refresh_gridview"/>    
         
     <item
         android:id="@+id/action_exit"
