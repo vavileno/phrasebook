@@ -12,6 +12,8 @@ public class Phrasebook {
 	
 	private String STRING_CATEGORY_COLUMN_NAME = "_category_num";
 	
+	private String STRING_CATEGORY_ID_COLUMN = "_id";
+	
 	private Map<Integer, String> sourcePhrasebookMap;
 	
 	private Map<Integer, String> destinationPhrasebookMap;
@@ -66,7 +68,7 @@ public class Phrasebook {
 		return pronuncPhrasebookMap.get(currentCategoryIds.get(i));
 	}
 	
-	public void savePhrase(String sourcePhrase, String destinationPhrase, String pronuncPhrase) {
+	public void savePhrase(String sourcePhrase, String destinationPhrase, String pronuncPhrase, int category) {
 		ContentValues cv = new ContentValues();
 		cv.put(STRING_PHRASE_COLUMN_NAME, sourcePhrase);
 		dbhelper.save(DataBaseHelper.STRING_SOURCE_TABLE_NAME, cv);
@@ -74,17 +76,37 @@ public class Phrasebook {
 		dbhelper.save(DataBaseHelper.STRING_DESTINATION_TABLE_NAME, cv);
 		cv.put(STRING_PHRASE_COLUMN_NAME, pronuncPhrase);
 		dbhelper.save(DataBaseHelper.STRING_PRONUNCATION_TABLE_NAME, cv);
-		cv.put(STRING_CATEGORY_COLUMN_NAME, 1);
+		
+		Util.getPhrasebook().reload(category);
+		
+		cv.clear();
+		cv.put(STRING_CATEGORY_ID_COLUMN, getIdBySourcePhrase(sourcePhrase));
+		cv.put(STRING_CATEGORY_COLUMN_NAME, category > 0 ? category : 1);
 		dbhelper.save(DataBaseHelper.STRING_CATEGORY_TABLE_NAME, cv);
 	}
 	
-	public void deletePhrase(int i) {
-		dbhelper.deleteById(DataBaseHelper.STRING_SOURCE_TABLE_NAME, STRING_PHRASE_COLUMN_NAME, i);
-		dbhelper.deleteById(DataBaseHelper.STRING_DESTINATION_TABLE_NAME, STRING_PHRASE_COLUMN_NAME, i);
-		dbhelper.deleteById(DataBaseHelper.STRING_PRONUNCATION_TABLE_NAME, STRING_PHRASE_COLUMN_NAME, i);
+	public void deletePhrase(CharSequence sourcePhrase) {
+		int id = getIdBySourcePhrase(sourcePhrase.toString());
+		dbhelper.deleteById(DataBaseHelper.STRING_SOURCE_TABLE_NAME, id);
+		dbhelper.deleteById(DataBaseHelper.STRING_DESTINATION_TABLE_NAME, id);
+		dbhelper.deleteById(DataBaseHelper.STRING_PRONUNCATION_TABLE_NAME, id);
+		dbhelper.deleteById(DataBaseHelper.STRING_CATEGORY_TABLE_NAME, id);
 	}
 
 	public int getSize() {
 		return currentCategoryIds.size() - 1;
 	}
+	
+	private int getIdBySourcePhrase(String phrase) {
+		if(phrase == null || phrase.isEmpty()) {
+			return 0;
+		}
+		for(Map.Entry<Integer, String> entry : sourcePhrasebookMap.entrySet()) {
+			if(phrase.equals(entry.getValue())) {
+				return entry.getKey();
+			}
+		}
+		return 0;
+	}
+
 }

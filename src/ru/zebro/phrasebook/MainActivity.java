@@ -13,10 +13,29 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
-    private AlertDialog.Builder deletePhraseAlert;	
+	private int currentCategory; 
+	
+	private AlertDialog.Builder deletePhraseAlert;	
+	
+	public int getCurrentCategory() {
+		return currentCategory;
+	}
+	
+	public void setCurrentCategory(int currentCategory) {
+		this.currentCategory = currentCategory;
+	}
+
+	public AlertDialog.Builder getDeletePhraseAlert() {
+		return deletePhraseAlert;
+	}
+
+	public void setDeletePhraseAlert(AlertDialog.Builder deletePhraseAlert) {
+		this.deletePhraseAlert = deletePhraseAlert;
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +70,10 @@ public class MainActivity extends Activity {
 			public boolean onItemLongClick(AdapterView<?> arg0, View view,
 					int position, long rowId) {
 
-				final int deletePosition = position;
+				final TextView textView = (TextView)view;
             	deletePhraseAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                    	Util.getPhrasebook().deletePhrase(deletePosition + 1);
+                    	Util.getPhrasebook().deletePhrase(textView.getText());
                     	refreshGridview(0);
                   } });
             	
@@ -88,37 +107,47 @@ public class MainActivity extends Activity {
     	switch (item.getItemId()) {
     		case R.id.action_common_category:
 		    	refreshGridview(1);
+		    	setCurrentCategory(1);
 		    	return true;    			
     		case R.id.action_time_category:
 		    	refreshGridview(2);
+		    	setCurrentCategory(2);
 		    	return true;    			
     		case R.id.action_places_category:
 		    	refreshGridview(3);
+		    	setCurrentCategory(3);
 		    	return true;
     		case R.id.action_hotel_category:
 		    	refreshGridview(4);
+		    	setCurrentCategory(4);
 		    	return true;
     		case R.id.action_transport_category:
 		    	refreshGridview(5);
+		    	setCurrentCategory(5);
 		    	return true;
     		case R.id.action_money_category:
 		    	refreshGridview(6);
+		    	setCurrentCategory(6);
 		    	return true;
     		case R.id.action_food_category:
 		    	refreshGridview(7);
+		    	setCurrentCategory(7);
 		    	return true;
     		case R.id.action_health_category:
 		    	refreshGridview(8);
+		    	setCurrentCategory(8);
 		    	return true;
 		    case R.id.action_exit:
 		    	this.finish(); 
 		        return true;
 		    case R.id.action_add_phrase:
 		    	Intent intent = new Intent(this, AddPhraseActivity.class);
+		    	intent.putExtra("category", getCurrentCategory());
 		    	startActivity(intent);
 		    	return true;
 		    case R.id.action_refresh_gridview:
 		    	refreshGridview(0);
+		    	setCurrentCategory(0);
 		    	return true;
 		    default:
 		        return super.onOptionsItemSelected(item);

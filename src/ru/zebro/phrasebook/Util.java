@@ -17,7 +17,9 @@ public class Util {
 		dbHelper = new DataBaseHelper(context);
 		
         try {
-			dbHelper.createDataBase();
+//        	if(!dbHelper.initDbFromCsvFile()) {
+        		dbHelper.createDataBase();
+//        	}
 			dbHelper.openDataBase();
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -1,0 +1,11 @@
+Аэропорт	飞机场	Fēijī chǎng
+Ж.д. вокзал	火车站	Huǒchē zhàn
+Автовокзал	汽车站	Qìchē zhàn
+Метро	地铁	Dìtiě
+Мне нужно попасть в аэропорт	我要去在飞机场	Wǒ yào qù zài fēijī chǎng
+Билет в один конец	单程票	Dānchéng piào
+Билет туда-обратно	来回票	Láihuí piào
+Soft sleeper	软卧	Ruǎnwò
+Hard sleeper	硬卧	Yìngwò
+Мне нужен билет на самолет до	我要一张飞机票在	Wǒ yào yī zhāng fēijī piào zài
+Я хочу поменять билет	我想换我的票	Wǒ xiǎng huàn wǒ de piào

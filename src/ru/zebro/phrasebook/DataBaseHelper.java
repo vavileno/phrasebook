@@ -31,8 +31,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	public static final String STRING_PRONUNCATION_TABLE_NAME = "_phrases_pinyin";	
 	
 	public static final String STRING_CATEGORY_TABLE_NAME = "_phrases_category";
-
+	
 	private static String DB_PATH;
+	
+//	private static final String CSV_FILE_NAME = "phrasebook.csv" ;	
 	
     //стандартный системный путь к базе данных приложения
 //    private static String RELATIVE_DB_PATH = "data/ru.zebro.phrasebook/databases/";
@@ -198,9 +200,32 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		phrasebookDataBase.insert(table, null, values);
 	}
 
-	public void deleteById(String tableName, String columnName, Integer id) {
+	public void deleteById(String tableName, Integer id) {
 		phrasebookDataBase.delete(tableName, STRING_ID_COLUMN_NAME + " = " + id, null);
 	}
+	
+//	public boolean initDbFromCsvFile() throws IOException {
+//		if(new File(CSV_FILE_NAME).exists()) {
+//			loadFromCsvFile(CSV_FILE_NAME);
+//		}
+//		// 
+//		return false;
+//	}		
+//	
+//	private void loadFromCsvFile(String path) throws IOException {
+//		FileInputStream fis = new FileInputStream(path);
+//		BufferedReader br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
+//		
+//		String line = null;
+//		while((line = br.readLine()) != null) {
+//			String[] phraseStrings = line.split(";");
+//			
+//		}
+//		br.close();
+//		fis = null;
+//		br = null;
+//	}
+
 	
 
         // Здесь можно добавить вспомогательные методы для доступа и получения данных из БД

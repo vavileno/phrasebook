@@ -26,7 +26,8 @@ public class AddPhraseActivity extends Activity {
             	Util.getPhrasebook().savePhrase(
             			sourcePhraseEditText.getText().toString(),
             			destinationPhraseEditText.getText().toString(),
-            			spellPhraseEditText.getText().toString());
+            			spellPhraseEditText.getText().toString(),
+            			getIntent().getExtras().getInt("category"));
             	addPhrase.finish();
             	Util.getMainActivity().refreshGridview(0);
             }
