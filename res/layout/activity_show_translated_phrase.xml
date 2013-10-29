@@ -8,14 +8,14 @@
         android:id="@+id/showTranslate"
         android:layout_width="match_parent"
         android:layout_height="138dp"
-        android:layout_weight="0.69"
+        android:layout_weight="0.72"
         android:gravity="center|bottom" />
 
     <TextView
         android:id="@+id/showTranslateSpell"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_weight="0.28"
+        android:layout_weight="0.10"
         android:gravity="center|top" />
 
 </LinearLayout>
