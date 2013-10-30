@@ -25,9 +25,9 @@ public class ShowTranslatedActivity extends Activity {
 	    spellView.setText(this.getIntent().getExtras().getString(TRANSLATED_TEXT_SPELLED));
 	}
 	
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		this.finish();
-		return true;
-	}
+//	@Override
+//	public boolean onTouchEvent(MotionEvent event) {
+//		this.finish();
+//		return true;
+//	}
 }
