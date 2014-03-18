@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -82,6 +84,10 @@ public class MainActivity extends Activity {
 			}
 	    	
 		});
+	    
+//	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout., COUNTRIES);
+        AutoCompleteTextView textView = (AutoCompleteTextView)findViewById(R.id.autoCompleteSearch);
+//        textView.setAdapter(adapter);
 	}
 	
     private AlertDialog.Builder createDeletePhraseAlert() {

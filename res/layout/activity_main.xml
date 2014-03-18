@@ -8,11 +8,24 @@
     android:id="@+id/gridview"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:layout_below="@+id/autoCompleteSearch"
     android:columnWidth="@dimen/textsize"
     android:gravity="fill"
     android:numColumns="1"
     android:stretchMode="columnWidth"
     android:verticalSpacing="10dp" />
+
+<AutoCompleteTextView
+    android:id="@+id/autoCompleteSearch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true"
+    android:ems="10" >
+
+    <requestFocus />
+</AutoCompleteTextView>
 
 </RelativeLayout>
 
