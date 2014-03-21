@@ -68,6 +68,14 @@ public class Phrasebook {
 		return pronuncPhrasebookMap.get(currentCategoryIds.get(i));
 	}
 	
+	public List<String> getSourcePhrases() {
+		List<String> result = new ArrayList<String>(sourcePhrasebookMap.values());
+		for(Map.Entry<Integer, String> entry : sourcePhrasebookMap.entrySet()) {
+			result.add(entry.getKey(), entry.getValue());
+		}
+		return result;
+	}	
+	
 	public void savePhrase(String sourcePhrase, String destinationPhrase, String pronuncPhrase, int category) {
 		ContentValues cv = new ContentValues();
 		cv.put(STRING_PHRASE_COLUMN_NAME, sourcePhrase);

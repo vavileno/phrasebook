@@ -1,5 +1,7 @@
 package ru.zebro.phrasebook;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -85,12 +87,18 @@ public class MainActivity extends Activity {
 	    	
 		});
 	    
-//	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout., COUNTRIES);
-        AutoCompleteTextView textView = (AutoCompleteTextView)findViewById(R.id.autoCompleteSearch);
-//        textView.setAdapter(adapter);
+	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.activity_list_item, getItems());
+        AutoCompleteTextView searchAutocomplete = (AutoCompleteTextView)findViewById(R.id.autoCompleteSearch);
+        searchAutocomplete.setThreshold(3);
+        searchAutocomplete.setDropDownHeight(10);
+        searchAutocomplete.setAdapter(adapter);
 	}
 	
-    private AlertDialog.Builder createDeletePhraseAlert() {
+    private List<String> getItems() {
+		return Util.getPhrasebook().getSourcePhrases();
+	}
+
+	private AlertDialog.Builder createDeletePhraseAlert() {
     	AlertDialog.Builder deletePhraseAlert = new AlertDialog.Builder(this);
     	deletePhraseAlert.setTitle(R.string.action_delete_phrase_header);
     	deletePhraseAlert.setMessage(R.string.action_delete_phrase_message);
