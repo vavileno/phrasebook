@@ -20,6 +20,9 @@ public class Phrasebook {
 	
 	private Map<Integer, String> pronuncPhrasebookMap;
 	
+	/**
+	 *	This list contents phrase ID list for current selected category
+	 * */ 
 	private List<Integer> currentCategoryIds = new ArrayList<Integer>();
 	
 	private DataBaseHelper dbhelper;
@@ -67,6 +70,16 @@ public class Phrasebook {
 	public String getSpellingPhrase(int i) {
 		return pronuncPhrasebookMap.get(currentCategoryIds.get(i));
 	}
+	
+	public String getDestinationPhrase(String sourcePhrase) {
+		int i = getIdBySourcePhrase(sourcePhrase);
+		return destinationPhrasebookMap.get(i);
+	}
+	
+	public String getSpellingPhrase(String sourcePhrase) {
+		int i = getIdBySourcePhrase(sourcePhrase);
+		return pronuncPhrasebookMap.get(i);
+	}	
 	
 	public List<String> getSourcePhrases() {
 		List<String> result = new ArrayList<String>(sourcePhrasebookMap.values());

@@ -21,9 +21,16 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	
+	/**
+	 * 	Current category, selected by user.
+	 * 	By default common category is selected and all source phrases from database are displayed.
+	 * 	User can select another category from menu and appropriate values will be displayed in the list.
+	 * */
 	private int currentCategory; 
 	
 	private AlertDialog.Builder deletePhraseAlert;	
+	
+	private AutoCompleteTextView searchAutocomplete;
 	
 	public int getCurrentCategory() {
 		return currentCategory;
@@ -50,24 +57,29 @@ public class MainActivity extends Activity {
 		Util.initDb(getApplicationContext());
 		
 		deletePhraseAlert = createDeletePhraseAlert();
+
+		// default source phrase list
 		final PhraseAdapter phraseAdapter = new PhraseAdapter(this);
-		
 	    GridView gridview = (GridView) findViewById(R.id.gridview);
 	    gridview.setAdapter(phraseAdapter);
 	    
 	    final Context context = this;
 
+	    // source phrase clicked
 	    gridview.setOnItemClickListener(new OnItemClickListener() {
 	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-		    	Intent intent = new Intent(context, ShowTranslatedActivity.class);
-		    	intent.putExtra(ShowTranslatedActivity.TRANSLATED_TEXT, 
-		    			Util.getPhrasebook().getDestinationPhrase(position + 1));
-		    	intent.putExtra(ShowTranslatedActivity.TRANSLATED_TEXT_SPELLED, 
-		    			Util.getPhrasebook().getSpellingPhrase(position + 1));		    	
-		    	startActivity(intent);
+	        	Intent intent = new Intent(context, ShowTranslatedActivity.class);
+	        	intent.putExtra(ShowTranslatedActivity.TRANSLATED_TEXT, 
+	        			Util.getPhrasebook().getDestinationPhrase(position + 1));
+	        	intent.putExtra(ShowTranslatedActivity.TRANSLATED_TEXT_SPELLED, 
+	        			Util.getPhrasebook().getSpellingPhrase(position + 1));	
+		    	intent.putExtra(ShowTranslatedActivity.SOURCE_TEXT, 
+		    			Util.getPhrasebook().getSourcePhrase(position + 1));	        	
+	        	startActivity(intent);
 	        }
 	    });
 	    
+	    // long click on source phrase
 	    gridview.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
@@ -86,29 +98,30 @@ public class MainActivity extends Activity {
 			}
 	    	
 		});
-	    
-	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.activity_list_item, getItems());
-        AutoCompleteTextView searchAutocomplete = (AutoCompleteTextView)findViewById(R.id.autoCompleteSearch);
-        searchAutocomplete.setThreshold(3);
-        searchAutocomplete.setDropDownHeight(10);
+
+	    // Autocomplete for search source phrase for translating
+	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getSourceItems());
+        searchAutocomplete = (AutoCompleteTextView)findViewById(R.id.autoCompleteSearch);
         searchAutocomplete.setAdapter(adapter);
-	}
-	
-    private List<String> getItems() {
-		return Util.getPhrasebook().getSourcePhrases();
-	}
+        searchAutocomplete.setOnItemClickListener(new OnItemClickListener() {
 
-	private AlertDialog.Builder createDeletePhraseAlert() {
-    	AlertDialog.Builder deletePhraseAlert = new AlertDialog.Builder(this);
-    	deletePhraseAlert.setTitle(R.string.action_delete_phrase_header);
-    	deletePhraseAlert.setMessage(R.string.action_delete_phrase_message);
-
-    	deletePhraseAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                
-          } });
-    	return deletePhraseAlert;
-    }	
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				String selected = (String) arg0.getAdapter().getItem(arg2);
+								
+		    	Intent intent = new Intent(context, ShowTranslatedActivity.class);
+		    	intent.putExtra(ShowTranslatedActivity.TRANSLATED_TEXT, 
+		    			Util.getPhrasebook().getDestinationPhrase(selected));
+		    	intent.putExtra(ShowTranslatedActivity.TRANSLATED_TEXT_SPELLED, 
+		    			Util.getPhrasebook().getSpellingPhrase(selected));
+		    	intent.putExtra(ShowTranslatedActivity.SOURCE_TEXT, 
+		    			selected);			    	
+		    	startActivity(intent);
+		    	searchAutocomplete.setText("");
+			}
+		});
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,6 +129,9 @@ public class MainActivity extends Activity {
 		return true;
 	}
 	
+	/**
+	 * 	Category selected
+	 * */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
@@ -166,8 +182,9 @@ public class MainActivity extends Activity {
 		    default:
 		        return super.onOptionsItemSelected(item);
     	}    	
-    }	
+    }
     
+    // Refresh source phrases list
     public void refreshGridview(int category) {
     	GridView gridview = (GridView) findViewById(R.id.gridview);
     	Util.getPhrasebook().reload(category);
@@ -177,46 +194,22 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-
 	}
 	
-	
-//	private void load() {
-//		try{
-//			InputStream myInput  = getApplicationContext().getAssets().open("input.txt");
-//			
-//			int ch;
-//			StringBuilder source = new StringBuilder();
-//			StringBuilder dest = new StringBuilder();
-//			StringBuilder pronunc = new StringBuilder();
-//			
-//			StringBuilder current = source;
-//			while((ch = myInput.read()) > 0) {
-//				if((char)ch != '\t') {
-//					current.append((char) ch);
-//				}
-//				else {
-//
-//				}
-//			}
-//			
-//			  FileInputStream fstream = new FileInputStream("textfile.txt");
-//			  // Get the object of DataInputStream
-//			  DataInputStream in = new DataInputStream(fstream);
-//			  BufferedReader br = new BufferedReader(new InputStreamReader(in));
-//			  String strLine;
-//			  //Read File Line By Line
-//			  while ((strLine = br.readLine()) != null)   {
-//			  // Print the content on the console
-//			  System.out.println (strLine);
-//			  }
-//			  //Close the input stream
-//			  in.close();
-//		}catch (Exception e)	{
-//			  System.err.println("Error: " + e.getMessage());
-//		}
-//		
-////		Util.getPhrasebook().savePhrase(sourcePhrase, destinationPhrase, pronuncPhrase)
-//	}
+    private List<String> getSourceItems() {
+		return Util.getPhrasebook().getSourcePhrases();
+	}
 
+    // DeletePhrase dialog
+	private AlertDialog.Builder createDeletePhraseAlert() {
+    	AlertDialog.Builder deletePhraseAlert = new AlertDialog.Builder(this);
+    	deletePhraseAlert.setTitle(R.string.action_delete_phrase_header);
+    	deletePhraseAlert.setMessage(R.string.action_delete_phrase_message);
+
+    	deletePhraseAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                
+          } });
+    	return deletePhraseAlert;
+    }	
 }

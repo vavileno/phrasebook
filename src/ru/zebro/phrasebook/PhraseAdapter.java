@@ -28,9 +28,8 @@ public class PhraseAdapter extends BaseAdapter {
         
     public View getView(int position, View convertView, ViewGroup parent) {
         TextView textView;
-        if (convertView == null) {  // if it's not recycled, initialize some attributes
+        if (convertView == null) { 
         	textView = new TextView(mContext);
-//        	textView.setLayoutParams(new GridView.LayoutParams());
         	textView.setPadding(8, 8, 8, 8);
         } else {
         	textView = (TextView) convertView;

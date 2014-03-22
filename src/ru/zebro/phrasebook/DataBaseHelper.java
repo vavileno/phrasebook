@@ -34,11 +34,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	
 	private static String DB_PATH;
 	
-//	private static final String CSV_FILE_NAME = "phrasebook.csv" ;	
-	
-    //стандартный системный путь к базе данных приложения
-//    private static String RELATIVE_DB_PATH = "data/ru.zebro.phrasebook/databases/";
-
     private static String DB_NAME = "phrasebook";
 
     private SQLiteDatabase phrasebookDataBase;
@@ -46,8 +41,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private final Context phrasebookContext;
 
     /**
-     * Конструктор
-     * Принимает и сохраняет ссылку на переданный контекст для доступа к ресурсам приложения
      * @param context
      */
     public DataBaseHelper(Context context) {
@@ -57,18 +50,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         DB_PATH = context.getFilesDir().getPath(); // + RELATIVE_DB_PATH;
     }
 
-  /**
-     * Создает пустую базу данных и перезаписывает ее нашей собственной базой
+    /**
+     *	Creates empty database and fills with values from resource file 
      * */
     public void createDataBase() throws IOException{
 
     	boolean dbExist = checkDataBase();
 
     	if(dbExist){
-    		//ничего не делать - база уже есть
+    		// nothing
     	}else{
 
-    		//вызывая этот метод создаем пустую базу, позже она будет перезаписана
         	this.getReadableDatabase();
 
         	try {
@@ -83,38 +75,28 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     	}
     }
 
-    /**
-     * Проверяет, существует ли уже эта база, чтобы не копировать каждый раз при запуске приложения
-     * @return true если существует, false если не существует
-     */
     private boolean checkDataBase(){
         File dbFile = new File(DB_PATH + DB_NAME);
         return dbFile.exists();
     }
 
     /**
-     * Копирует базу из папки assets заместо созданной локальной БД
-     * Выполняется путем копирования потока байтов.
+     * Copies database from assets folder overwriting earlier created local db
      * */
     private void copyDataBase() throws IOException{
 
-    	//Открываем локальную БД как входящий поток
     	InputStream myInput = phrasebookContext.getAssets().open(DB_NAME);
 
-    	//Путь ко вновь созданной БД
     	String outFileName = DB_PATH + DB_NAME;
 
-    	//Открываем пустую базу данных как исходящий поток
     	OutputStream myOutput = new FileOutputStream(outFileName);
 
-    	//перемещаем байты из входящего файла в исходящий
     	byte[] buffer = new byte[1024];
     	int length;
     	while ((length = myInput.read(buffer))>0){
     		myOutput.write(buffer, 0, length);
     	}
 
-    	//закрываем потоки
     	myOutput.flush();
     	myOutput.close();
     	myInput.close();
@@ -123,7 +105,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public void openDataBase() throws SQLException{
 
-    	//открываем БД
         String myPath = DB_PATH + DB_NAME;
         phrasebookDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
 
@@ -146,7 +127,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 	}
 	
-	
+	// Loads phrase IDs for given category
 	public List<Integer> loadCategoryPhraseIds(int category) {
 		List<Integer> result = new ArrayList<Integer>();
 		
@@ -166,6 +147,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		return result;		
 	}	
 	
+	// Loads source, pronuncation and translated phrases in memory
 	@SuppressLint("UseSparseArrays")
 	public List<Map<Integer, String>> loadPhraseBook() {
 		List<Map<Integer, String>> phrasebookList = new ArrayList<Map<Integer, String>>();
@@ -203,30 +185,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	public void deleteById(String tableName, Integer id) {
 		phrasebookDataBase.delete(tableName, STRING_ID_COLUMN_NAME + " = " + id, null);
 	}
-	
-//	public boolean initDbFromCsvFile() throws IOException {
-//		if(new File(CSV_FILE_NAME).exists()) {
-//			loadFromCsvFile(CSV_FILE_NAME);
-//		}
-//		// 
-//		return false;
-//	}		
-//	
-//	private void loadFromCsvFile(String path) throws IOException {
-//		FileInputStream fis = new FileInputStream(path);
-//		BufferedReader br = new BufferedReader(new InputStreamReader(fis, Charset.forName("UTF-8")));
-//		
-//		String line = null;
-//		while((line = br.readLine()) != null) {
-//			String[] phraseStrings = line.split(";");
-//			
-//		}
-//		br.close();
-//		fis = null;
-//		br = null;
-//	}
 
-	
 
         // Здесь можно добавить вспомогательные методы для доступа и получения данных из БД
         // вы можете возвращать курсоры через "return myDataBase.query(....)", это облегчит их использование
