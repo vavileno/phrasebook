@@ -4,26 +4,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
+    <ru.zebro.phrasebook.AutoResizeTextView
         android:id="@+id/showTranslate"
         android:layout_width="match_parent"
         android:layout_height="138dp"
         android:layout_weight="0.39"
-        android:gravity="center|bottom" />
+        android:gravity="center" android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/showTranslateSpell"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_weight="0.10"
-        android:gravity="center|top" />
+        android:layout_height="59dp"
+        android:gravity="center|top"/>
 
     <TextView
         android:id="@+id/showSource"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_weight="0.10"
-        android:gravity="center|top" />
+        android:layout_height="54dp"
+        android:gravity="center|top"/>
 
 </LinearLayout>
 

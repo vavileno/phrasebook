@@ -1,12 +1,13 @@
 package ru.zebro.phrasebook;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.content.ContentValues;
 
-public class Phrasebook {
+public class Phrasebook implements ArrayContainer<String> {
 	
 	private String STRING_PHRASE_COLUMN_NAME = "_phrase_string";
 	
@@ -14,16 +15,18 @@ public class Phrasebook {
 	
 	private String STRING_CATEGORY_ID_COLUMN = "_id";
 	
-	private Map<Integer, String> sourcePhrasebookMap;
+	private LinkedHashMap<Integer, String> sourcePhrasebookMap;
 	
-	private Map<Integer, String> destinationPhrasebookMap;
+	private LinkedHashMap<Integer, String> destinationPhrasebookMap;
 	
-	private Map<Integer, String> pronuncPhrasebookMap;
+	private LinkedHashMap<Integer, String> pronuncPhrasebookMap;
 	
 	/**
 	 *	This list contents phrase ID list for current selected category
 	 * */ 
-	private List<Integer> currentCategoryIds = new ArrayList<Integer>();
+	private List<Integer> currentCategoryIds = new ArrayList<>();
+
+    private int currentCategory;
 	
 	private DataBaseHelper dbhelper;
 
@@ -32,7 +35,7 @@ public class Phrasebook {
 	}
 	
 	public void reload(int category) {
-		List<Map<Integer, String>> phraseBookList = dbhelper.loadPhraseBook();
+		List<LinkedHashMap<Integer, String>> phraseBookList = dbhelper.loadPhraseBook();
 		
 		sourcePhrasebookMap = phraseBookList.get(0);
 		destinationPhrasebookMap = phraseBookList.get(1);
@@ -40,17 +43,19 @@ public class Phrasebook {
 		
 		if(category != 0) {
 			currentCategoryIds = dbhelper.loadCategoryPhraseIds(category);
+            currentCategory = category;
 		}
 		else {
+            currentCategory = category;
 			currentCategoryIds.clear();
 			currentCategoryIds.add(0);
 			currentCategoryIds.addAll(sourcePhrasebookMap.keySet());
 		}
 	}
 	
-	public Phrasebook(Map<Integer, String> sourcePhrasebookMap,
-			Map<Integer, String> destinationPhrasebookMap, 
-			Map<Integer, String> pronuncPhrasebookMap, 
+	public Phrasebook(LinkedHashMap<Integer, String> sourcePhrasebookMap,
+                      LinkedHashMap<Integer, String> destinationPhrasebookMap,
+                      LinkedHashMap<Integer, String> pronuncPhrasebookMap,
 			DataBaseHelper dbhelper) {
 		super();
 		this.sourcePhrasebookMap = sourcePhrasebookMap;
@@ -83,9 +88,6 @@ public class Phrasebook {
 	
 	public List<String> getSourcePhrases() {
 		List<String> result = new ArrayList<String>(sourcePhrasebookMap.values());
-		for(Map.Entry<Integer, String> entry : sourcePhrasebookMap.entrySet()) {
-			result.add(entry.getKey(), entry.getValue());
-		}
 		return result;
 	}	
 	
@@ -130,4 +132,12 @@ public class Phrasebook {
 		return 0;
 	}
 
+    @Override
+    public List<String> getArray() {
+        List<String> result = new ArrayList<>();
+        for(int i=1; i < currentCategoryIds.size(); i++) {
+            result.add(sourcePhrasebookMap.get(currentCategoryIds.get(i)));
+        }
+        return result;
+    }
 }

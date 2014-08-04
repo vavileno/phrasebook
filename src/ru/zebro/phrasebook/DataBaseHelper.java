@@ -5,11 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -149,11 +145,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	
 	// Loads source, pronuncation and translated phrases in memory
 	@SuppressLint("UseSparseArrays")
-	public List<Map<Integer, String>> loadPhraseBook() {
-		List<Map<Integer, String>> phrasebookList = new ArrayList<Map<Integer, String>>();
+	public List<LinkedHashMap<Integer, String>> loadPhraseBook() {
+		List<LinkedHashMap<Integer, String>> phrasebookList = new ArrayList<>();
 		String[] phraseColumns = {"_id", "_phrase_string"};
 		
-		Cursor cursor = phrasebookDataBase.query("_phrases_rus", phraseColumns, null, null, null, null, null);
+		Cursor cursor = phrasebookDataBase.query("_phrases_rus", phraseColumns, null, null, null, null, "_phrase_string");
 		phrasebookList.add(0, loadPhrasesMap(cursor));
 		
 		cursor = phrasebookDataBase.query("_phrases_mandarin", phraseColumns, null, null, null, null, null);
@@ -165,13 +161,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		return phrasebookList;
 	}
 	
-	private Map<Integer, String> loadPhrasesMap(Cursor cursor) {
+	private LinkedHashMap<Integer, String> loadPhrasesMap(Cursor cursor) {
 		if(cursor.getCount() == 0) {
-			return Collections.emptyMap();
+			return new LinkedHashMap<>();
 		} 
 		cursor.moveToPosition(0);
-		
-		Map<Integer, String> phrasesMap = new HashMap<Integer, String>();
+
+        LinkedHashMap<Integer, String> phrasesMap = new LinkedHashMap<>();
 		do {
 			phrasesMap.put(cursor.getInt(0), cursor.getString(1));
 		} while(cursor.moveToNext());	

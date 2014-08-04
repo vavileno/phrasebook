@@ -40,14 +40,14 @@ public class MainActivity extends Activity {
 		this.currentCategory = currentCategory;
 	}
 
-	public AlertDialog.Builder getDeletePhraseAlert() {
-		return deletePhraseAlert;
-	}
-
-	public void setDeletePhraseAlert(AlertDialog.Builder deletePhraseAlert) {
-		this.deletePhraseAlert = deletePhraseAlert;
-	}
-	
+//	public AlertDialog.Builder getDeletePhraseAlert() {
+//		return deletePhraseAlert;
+//	}
+//
+//	public void setDeletePhraseAlert(AlertDialog.Builder deletePhraseAlert) {
+//		this.deletePhraseAlert = deletePhraseAlert;
+//	}
+//
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -99,8 +99,8 @@ public class MainActivity extends Activity {
 	    	
 		});
 
-	    // Autocomplete for search source phrase for translating
-	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getSourceItems());
+	    // Autocomplete for search source phrase for translate
+	    ArrayAdapter<String> adapter = new SubStringFilterArrayAdapter(this, android.R.layout.simple_list_item_1, Util.getPhrasebook());
         searchAutocomplete = (AutoCompleteTextView)findViewById(R.id.autoCompleteSearch);
         searchAutocomplete.setAdapter(adapter);
         searchAutocomplete.setOnItemClickListener(new OnItemClickListener() {
@@ -109,14 +109,14 @@ public class MainActivity extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				String selected = (String) arg0.getAdapter().getItem(arg2);
-								
+
 		    	Intent intent = new Intent(context, ShowTranslatedActivity.class);
-		    	intent.putExtra(ShowTranslatedActivity.TRANSLATED_TEXT, 
+		    	intent.putExtra(ShowTranslatedActivity.TRANSLATED_TEXT,
 		    			Util.getPhrasebook().getDestinationPhrase(selected));
-		    	intent.putExtra(ShowTranslatedActivity.TRANSLATED_TEXT_SPELLED, 
+		    	intent.putExtra(ShowTranslatedActivity.TRANSLATED_TEXT_SPELLED,
 		    			Util.getPhrasebook().getSpellingPhrase(selected));
-		    	intent.putExtra(ShowTranslatedActivity.SOURCE_TEXT, 
-		    			selected);			    	
+		    	intent.putExtra(ShowTranslatedActivity.SOURCE_TEXT,
+		    			selected);
 		    	startActivity(intent);
 		    	searchAutocomplete.setText("");
 			}
@@ -196,9 +196,9 @@ public class MainActivity extends Activity {
 		super.onDestroy();
 	}
 	
-    private List<String> getSourceItems() {
-		return Util.getPhrasebook().getSourcePhrases();
-	}
+//    private List<String> getSourceItems() {
+//		return Util.getPhrasebook().getSourcePhrases();
+//	}
 
     // DeletePhrase dialog
 	private AlertDialog.Builder createDeletePhraseAlert() {
